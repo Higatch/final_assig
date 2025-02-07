@@ -1,0 +1,438 @@
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) {
+          console.log("❌ トークンがありません -> ログアウト処理");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        console.log("🔹 トークン取得:", token);
+
+        const response = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("✅ ユーザーデータ取得成功:", response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("❌ ユーザー情報取得失敗:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // 🟢 ✅ 追加: `login` 関数
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post("http://higatch.mokomichi.jp:8000/api/token/", {
+        username,
+        password,
+      });
+
+      console.log("✅ ログイン成功:", response.data);
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+
+      // ユーザー情報を取得
+      const userResponse = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+        headers: { Authorization: `Bearer ${response.data.access}` },
+      });
+
+      console.log("✅ ユーザーデータ取得成功:", userResponse.data);
+      setUser(userResponse.data);
+      return true;
+    } catch (error) {
+      console.error("❌ ログイン失敗:", error);
+      return false;
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
+1~yimport { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) {
+          console.log("❌ トークンがありません -> ログアウト処理");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        console.log("🔹 トークン取得:", token);
+
+        const response = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("✅ ユーザーデータ取得成功:", response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("❌ ユーザー情報取得失敗:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // 🟢 ✅ 追加: `login` 関数
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post("http://higatch.mokomichi.jp:8000/api/token/", {
+        username,
+        password,
+      });
+
+      console.log("✅ ログイン成功:", response.data);
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+
+      // ユーザー情報を取得
+      const userResponse = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+        headers: { Authorization: `Bearer ${response.data.access}` },
+      });
+
+      console.log("✅ ユーザーデータ取得成功:", userResponse.data);
+      setUser(userResponse.data);
+      return true;
+    } catch (error) {
+      console.error("❌ ログイン失敗:", error);
+      return false;
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) {
+          console.log("❌ トークンがありません -> ログアウト処理");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        console.log("🔹 トークン取得:", token);
+
+        const response = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("✅ ユーザーデータ取得成功:", response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("❌ ユーザー情報取得失敗:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // 🟢 ✅ 追加: `login` 関数
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post("http://higatch.mokomichi.jp:8000/api/token/", {
+        username,
+        password,
+      });
+
+      console.log("✅ ログイン成功:", response.data);
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+
+      // ユーザー情報を取得
+      const userResponse = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+        headers: { Authorization: `Bearer ${response.data.access}` },
+      });
+
+      console.log("✅ ユーザーデータ取得成功:", userResponse.data);
+      setUser(userResponse.data);
+      return true;
+    } catch (error) {
+      console.error("❌ ログイン失敗:", error);
+      return false;
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
+1~import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) {
+          console.log("❌ トークンがありません -> ログアウト処理");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        console.log("🔹 トークン取得:", token);
+
+        const response = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("✅ ユーザーデータ取得成功:", response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("❌ ユーザー情報取得失敗:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // 🟢 ✅ 追加: `login` 関数
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post("http://higatch.mokomichi.jp:8000/api/token/", {
+        username,
+        password,
+      });
+
+      console.log("✅ ログイン成功:", response.data);
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+
+      // ユーザー情報を取得
+      const userResponse = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+        headers: { Authorization: `Bearer ${response.data.access}` },
+      });
+
+      console.log("✅ ユーザーデータ取得成功:", userResponse.data);
+      setUser(userResponse.data);
+      return true;
+    } catch (error) {
+      console.error("❌ ログイン失敗:", error);
+      return false;
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) {
+          console.log("❌ トークンがありません -> ログアウト処理");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        console.log("🔹 トークン取得:", token);
+
+        const response = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("✅ ユーザーデータ取得成功:", response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("❌ ユーザー情報取得失敗:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // 🟢 ✅ 追加: `login` 関数
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post("http://higatch.mokomichi.jp:8000/api/token/", {
+        username,
+        password,
+      });
+
+      console.log("✅ ログイン成功:", response.data);
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+
+      // ユーザー情報を取得
+      const userResponse = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+        headers: { Authorization: `Bearer ${response.data.access}` },
+      });
+
+      console.log("✅ ユーザーデータ取得成功:", userResponse.data);
+      setUser(userResponse.data);
+      return true;
+    } catch (error) {
+      console.error("❌ ログイン失敗:", error);
+      return false;
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
+import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
+
+const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        if (!token) {
+          console.log("❌ トークンがありません -> ログアウト処理");
+          setUser(null);
+          setLoading(false);
+          return;
+        }
+
+        console.log("🔹 トークン取得:", token);
+
+        const response = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("✅ ユーザーデータ取得成功:", response.data);
+        setUser(response.data);
+      } catch (error) {
+        console.error("❌ ユーザー情報取得失敗:", error);
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // 🟢 ✅ 追加: `login` 関数
+  const login = async (username, password) => {
+    try {
+      const response = await axios.post("http://higatch.mokomichi.jp:8000/api/token/", {
+        username,
+        password,
+      });
+
+      console.log("✅ ログイン成功:", response.data);
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
+
+      // ユーザー情報を取得
+      const userResponse = await axios.get("http://higatch.mokomichi.jp:8000/api/users/me/", {
+        headers: { Authorization: `Bearer ${response.data.access}` },
+      });
+
+      console.log("✅ ユーザーデータ取得成功:", userResponse.data);
+      setUser(userResponse.data);
+      return true;
+    } catch (error) {
+      console.error("❌ ログイン失敗:", error);
+      return false;
+    }
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, setUser, loading, login }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);

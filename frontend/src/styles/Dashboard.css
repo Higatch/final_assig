@@ -1,0 +1,65 @@
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+}
+
+.header-left h1 {
+  margin: 0;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.header-nav {
+  display: flex;
+  gap: 15px;
+}
+
+.header-nav button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.header-nav button:hover {
+  text-decoration: underline;
+}
+
+.header-right .logout-btn {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.dashboard-content {
+  padding: 20px;
+}
+
+.announcements {
+  margin-top: 20px;
+}
+
+.announcements ul {
+  list-style: none;
+  padding: 0;
+}
+
+.announcements li {
+  background: #f1f1f1;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.announcements img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
